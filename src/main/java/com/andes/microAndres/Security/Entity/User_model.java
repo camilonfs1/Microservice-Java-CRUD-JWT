@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class User {
+public class User_model {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotNull
@@ -25,10 +25,10 @@ public class User {
     inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Roll> roles = new HashSet<>();
 
-    public User() {
+    public User_model() {
     }
 
-    public User(String name, String userName, String email, String password) {
+    public User_model(String name, String userName, String email, String password) {
         this.name = name;
         UserName = userName;
         this.email = email;
