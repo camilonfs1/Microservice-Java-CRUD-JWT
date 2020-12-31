@@ -5,6 +5,8 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 
+//DataBase used
+
 public class Roll {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

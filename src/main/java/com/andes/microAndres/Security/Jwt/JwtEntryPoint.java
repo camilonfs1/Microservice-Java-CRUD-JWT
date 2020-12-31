@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+//Returns error 401 if the token is invalid
+
 @Component
 public class JwtEntryPoint implements AuthenticationEntryPoint {
 

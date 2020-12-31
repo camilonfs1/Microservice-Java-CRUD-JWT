@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+//Generate token and valide token
 
 @Component
 public class JwtProvider  {

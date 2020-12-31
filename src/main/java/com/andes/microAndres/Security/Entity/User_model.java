@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+//DataBase used
+
 public class User_model {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

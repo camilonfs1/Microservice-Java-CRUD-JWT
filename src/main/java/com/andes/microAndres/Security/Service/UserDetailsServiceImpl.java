@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+//Makes the user class a main user
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
