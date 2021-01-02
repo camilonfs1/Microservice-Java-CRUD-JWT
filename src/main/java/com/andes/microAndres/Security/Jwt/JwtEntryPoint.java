@@ -1,4 +1,4 @@
-package com.andes.microAndres.Security.Jwt;
+package com.andes.microAndres.security.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//Returns error 401 if the token is invalid
-
 @Component
 public class JwtEntryPoint implements AuthenticationEntryPoint {
 
@@ -20,7 +18,7 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException, ServletException {
-        logger.error("fail en el metodo commence");
+        logger.error("fail en el método commence");
         res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "no autorizado");
     }
 }

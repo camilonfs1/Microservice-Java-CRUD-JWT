@@ -1,7 +1,6 @@
-package com.andes.microAndres.Security.Jwt;
+package com.andes.microAndres.security.jwt;
 
-
-import com.andes.microAndres.Security.Service.UserDetailsServiceImpl;
+import com.andes.microAndres.security.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//Executed ones by request
-
 public class JwtTokenFilter extends OncePerRequestFilter {
+
     private final static Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 
     @Autowired
@@ -29,23 +27,26 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
-        try{
+        try {
             String token = getToken(req);
             if(token != null && jwtProvider.validateToken(token)){
-                String UserName = jwtProvider.getUserNameFromToken(token);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(UserName);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
+                String nombreUsuario = jwtProvider.getNombreUsuarioFromToken(token);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(nombreUsuario);
+
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
-        }catch (Exception e){
-            logger.error("fail en el metodo doFilter");
+        } catch (Exception e){
+            logger.error("fail en el método doFilter " + e.getMessage());
         }
+        filterChain.doFilter(req, res);
     }
 
     private String getToken(HttpServletRequest request){
         String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Bearer"))
-            return header.replace("Bearer","");
+        if(header != null && header.startsWith("Bearer"))
+            return header.replace("Bearer ", "");
         return null;
     }
 }

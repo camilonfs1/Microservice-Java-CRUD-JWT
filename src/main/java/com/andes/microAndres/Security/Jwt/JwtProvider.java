@@ -1,7 +1,6 @@
-package com.andes.microAndres.Security.Jwt;
+package com.andes.microAndres.security.jwt;
 
-
-import com.andes.microAndres.Security.Entity.MainUser;
+import com.andes.microAndres.security.entity.UsuarioPrincipal;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,51 +10,44 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-//Generate token and valide token
-
 @Component
-public class JwtProvider  {
-
+public class JwtProvider {
     private final static Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
     @Value("${jwt.secret}")
     private String secret;
+
     @Value("${jwt.expiration}")
     private int expiration;
 
     public String generateToken(Authentication authentication){
-        MainUser mainUser = (MainUser) authentication.getPrincipal();
-        return Jwts.builder().setSubject(mainUser.getUsername())
+        UsuarioPrincipal usuarioPrincipal = (UsuarioPrincipal) authentication.getPrincipal();
+        return Jwts.builder().setSubject(usuarioPrincipal.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + expiration * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
-    public String getUserNameFromToken(String token){
+
+    public String getNombreUsuarioFromToken(String token){
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
+
     public boolean validateToken(String token){
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
         }catch (MalformedJwtException e){
-            logger.error("token malformado");
-        }
-        catch (UnsupportedJwtException e){
+            logger.error("token mal formado");
+        }catch (UnsupportedJwtException e){
             logger.error("token no soportado");
-        }
-        catch (ExpiredJwtException e){
+        }catch (ExpiredJwtException e){
             logger.error("token expirado");
-        }
-        catch (IllegalArgumentException e){
-            logger.error("token vacio");
-        }
-        catch (SignatureException e){
+        }catch (IllegalArgumentException e){
+            logger.error("token vacío");
+        }catch (SignatureException e){
             logger.error("fail en la firma");
         }
         return false;
     }
-
-
-
 }

@@ -1,11 +1,8 @@
-package com.andes.microAndres.Security;
+package com.andes.microAndres.security;
 
-//Organice all classes in Security
-
-
-import com.andes.microAndres.Security.Jwt.JwtEntryPoint;
-import com.andes.microAndres.Security.Jwt.JwtTokenFilter;
-import com.andes.microAndres.Security.Service.UserDetailsServiceImpl;
+import com.andes.microAndres.security.jwt.JwtEntryPoint;
+import com.andes.microAndres.security.jwt.JwtTokenFilter;
+import com.andes.microAndres.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MainSecurity extends WebSecurityConfigurerAdapter {
+
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -37,7 +35,7 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return  new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -66,7 +64,6 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
